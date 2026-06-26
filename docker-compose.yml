@@ -1,0 +1,74 @@
+services:
+
+  cassandra-1:
+    image: cassandra:5.0
+    container_name: cassandra-1
+    hostname: cassandra-1
+    networks:
+      - cassandra-net
+    environment:
+      CASSANDRA_CLUSTER_NAME: payment-cluster
+      CASSANDRA_SEEDS: cassandra-1
+      CASSANDRA_LISTEN_ADDRESS: cassandra-1
+      CASSANDRA_BROADCAST_ADDRESS: cassandra-1
+      CASSANDRA_BROADCAST_RPC_ADDRESS: cassandra-1
+      HEAP_NEWSIZE: 256M
+      MAX_HEAP_SIZE: 1G
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra1-data:/var/lib/cassandra
+    healthcheck:
+      test: [ "CMD-SHELL", "nodetool status | grep UN || exit 1" ]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 120s
+
+  cassandra-2:
+    image: cassandra:5.0
+    container_name: cassandra-2
+    hostname: cassandra-2
+    networks:
+      - cassandra-net
+    environment:
+      CASSANDRA_CLUSTER_NAME: payment-cluster
+      CASSANDRA_SEEDS: cassandra-1
+      CASSANDRA_LISTEN_ADDRESS: cassandra-2
+      CASSANDRA_BROADCAST_ADDRESS: cassandra-2
+      CASSANDRA_BROADCAST_RPC_ADDRESS: cassandra-2
+      HEAP_NEWSIZE: 256M
+      MAX_HEAP_SIZE: 1G
+    depends_on:
+      cassandra-1:
+        condition: service_started
+    volumes:
+      - cassandra2-data:/var/lib/cassandra
+    healthcheck:
+      test: [ "CMD-SHELL", "nodetool status | grep UN || exit 1" ]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 150s
+
+  cassandra-init:
+    image: cassandra:5.0
+    container_name: cassandra-init
+    networks:
+      - cassandra-net
+    depends_on:
+      cassandra-1:
+        condition: service_started
+      cassandra-2:
+        condition: service_started
+    volumes:
+      - ./docker-config/cassandra/migration:/migration:ro
+      - ./docker-config/cassandra/init.sh:/init.sh:ro
+    entrypoint: [ "/bin/bash", "/init.sh" ]
+
+networks:
+  cassandra-net:
+
+volumes:
+  cassandra1-data:
+  cassandra2-data:
