@@ -1,4 +1,4 @@
-package com.davinchicoder.card_payment_processor
+package com.davinchicoder.card_payment_processor.it
 
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
@@ -12,7 +12,8 @@ class TestcontainersConfiguration {
     @Bean
     @ServiceConnection
     fun cassandraContainer(): CassandraContainer {
-        return CassandraContainer(DockerImageName.parse("cassandra:latest"))
+        return CassandraContainer(DockerImageName.parse("cassandra:5.0"))
+            .withInitScript("test-init.cql")
     }
 
 }

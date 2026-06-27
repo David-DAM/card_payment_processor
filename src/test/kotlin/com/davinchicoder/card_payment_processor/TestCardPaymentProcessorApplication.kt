@@ -1,5 +1,6 @@
 package com.davinchicoder.card_payment_processor
 
+import com.davinchicoder.card_payment_processor.it.TestcontainersConfiguration
 import org.springframework.boot.fromApplication
 import org.springframework.boot.with
 

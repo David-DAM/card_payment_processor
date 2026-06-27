@@ -1,0 +1,30 @@
+### POST request to create a card
+POST {{baseUrl}}/cards
+Content-Type: application/json
+
+{
+  "holder": "John Doe",
+  "pan": "4532123456789012",
+  "creditLimit": 5000.00,
+  "availableCredit": 5000.00,
+  "currency": "USD"
+}
+
+> {%
+    client.test("Create card successfully", function () {
+        client.assert(response.status === 201, "Response status is not 201");
+        client.assert(response.body.hasOwnProperty("cardId"), "Response does not contain cardId");
+        client.assert(response.body.hasOwnProperty("holder"), "Response does not contain holder");
+        client.assert(response.body.holder === "John Doe", "Holder name mismatch");
+        client.assert(response.body.hasOwnProperty("maskedPan"), "Response does not contain maskedPan");
+        client.assert(response.body.maskedPan === "************9012", "Masked PAN mismatch");
+        client.assert(response.body.hasOwnProperty("creditLimit"), "Response does not contain creditLimit");
+        client.assert(response.body.creditLimit === 5000.00, "Credit limit mismatch");
+        client.assert(response.body.hasOwnProperty("availableCredit"), "Response does not contain availableCredit");
+        client.assert(response.body.availableCredit === 5000.00, "Available credit mismatch");
+        client.assert(response.body.hasOwnProperty("currency"), "Response does not contain currency");
+        client.assert(response.body.currency === "USD", "Currency mismatch");
+        client.assert(response.body.hasOwnProperty("createdAt"), "Response does not contain createAt");
+    });
+%}
+

@@ -5,6 +5,7 @@ spring:
     contact-points: localhost:9042
     keyspace-name: payment_processor
     local-datacenter: datacenter1
+    schema-action: none
 
 management:
   endpoints:

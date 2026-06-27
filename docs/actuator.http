@@ -1,0 +1,11 @@
+### GET request to check actuator health
+GET {{baseUrl}}/actuator/health
+
+
+> {%
+    client.test("Health check successful", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.hasOwnProperty("status"), "Response does not contain status");
+        client.assert(response.body.status === "UP", "Health status is not UP");
+    });
+%}
