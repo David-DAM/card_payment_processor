@@ -1,4 +1,4 @@
-package com.davinchicoder.card_payment_processor.card
+package com.davinchicoder.card_payment_processor.card.entity
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.cassandra.core.mapping.CassandraType

@@ -1,4 +1,4 @@
-package com.davinchicoder.card_payment_processor.card
+package com.davinchicoder.card_payment_processor.card.dto
 
 import java.math.BigDecimal
 

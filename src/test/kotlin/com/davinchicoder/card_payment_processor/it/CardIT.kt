@@ -1,8 +1,9 @@
 package com.davinchicoder.card_payment_processor.it
 
-import com.davinchicoder.card_payment_processor.card.CardDto
-import com.davinchicoder.card_payment_processor.card.CardQueryRepository
-import com.davinchicoder.card_payment_processor.card.CreatedCardDto
+import com.davinchicoder.card_payment_processor.card.dto.CardDto
+import com.davinchicoder.card_payment_processor.card.dto.CreatedCardDto
+import com.davinchicoder.card_payment_processor.card.repository.CardQueryRepository
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -24,7 +25,7 @@ class CardIT {
     lateinit var repository: CardQueryRepository
 
     @Test
-    suspend fun `should create a card`() {
+    fun `should create a card`() = runBlocking {
 
         val cardDto = CardDto(
             holder = "John Doe",

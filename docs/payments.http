@@ -1,0 +1,50 @@
+### Authorize a payment
+POST {{baseUrl}}/payments/authorize
+Content-Type: application/json
+
+{
+  "cardId": "REPLACE_WITH_CARD_ID",
+  "amount": 100.00,
+  "currency": "USD",
+  "merchant": "Test Merchant"
+}
+
+> {%
+    client.test("Authorize payment successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.hasOwnProperty("transactionId"), "Response does not contain transactionId");
+        client.assert(response.body.hasOwnProperty("status"), "Response does not contain status");
+        client.assert(response.body.status === "APPROVED", "Status is not APPROVED");
+    });
+    client.global.set("transactionId", response.body.transactionId);
+%}
+
+### Capture a payment
+POST {{baseUrl}}/payments/{{transactionId}}/capture
+Content-Type: application/json
+
+> {%
+    client.test("Capture payment successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Refund a payment
+POST {{baseUrl}}/payments/{{transactionId}}/refund
+Content-Type: application/json
+
+> {%
+    client.test("Refund payment successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Reverse a payment
+POST {{baseUrl}}/payments/{{transactionId}}/reverse
+Content-Type: application/json
+
+> {%
+    client.test("Reverse payment successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}

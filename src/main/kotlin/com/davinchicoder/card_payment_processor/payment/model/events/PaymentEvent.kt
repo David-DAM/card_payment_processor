@@ -1,0 +1,3 @@
+package com.davinchicoder.card_payment_processor.payment.model.events
+
+sealed interface PaymentEvent
